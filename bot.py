@@ -1,17 +1,23 @@
 import telebot
+from telebot import apihelper # تم استدعاء المكتبة المساعدة للبروكسي
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import time
 import schedule
 import threading
 
 # ==========================================
-# الإعدادات الأساسية (تم إدخال بياناتك بنجاح)
+# الإعدادات الأساسية
 # ==========================================
 TOKEN = "8787496108:AAFnPOzep_lawLvsJuBoNrD9Owltx6-zzfo"
 CHAT_ID = "-1001920070532" # جروب: سلة شوب sallanet ©
 
-# ⚠️ هام: ضع رابط الصورة أو اللوجو الخاص ببراند Sallanet هنا بين علامتي التنصيص
+# ⚠️ هام: ضع رابط الصورة الخاصة ببراند Sallanet هنا
 MEDIA_URL = "https://example.com/your-sallanet-image.jpg" 
+
+# ==========================================
+# إعدادات البروكسي لتجاوز الحظر في باقة PythonAnywhere المجانية
+# ==========================================
+apihelper.proxy = {'https': 'http://proxy.server:3128'}
 
 bot = telebot.TeleBot(TOKEN)
 last_message_id = None
@@ -73,5 +79,6 @@ send_promotional_message()
 # تشغيل الجدولة في الخلفية
 threading.Thread(target=run_scheduler, daemon=True).start()
 
+# تشغيل البوت مع إعدادات تحمل التقطيع الخاص بالبروكسي المجاني
 print("🤖 البوت يعمل الآن ويراقب الجدولة...")
-bot.infinity_polling()
+bot.infinity_polling(timeout=10, long_polling_timeout=5)
